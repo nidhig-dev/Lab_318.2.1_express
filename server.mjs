@@ -1,0 +1,49 @@
+import express from "express";
+import globalErr from "./middleware/globalErrorHandle.mjs";
+import fs from "fs";
+
+const app=express();
+const PORT=3000;
+//define template engine
+app.engine("perscholas",(path,options,callback)=>{
+    fs.readFile(path,(error,content)=>{
+        if(error){
+            return(callback(error));
+        }
+        let rendered=content
+        .toString()
+        .replaceAll("#heading#",options.heading)
+        .replace("#info#",options.info);
+    return(callback(null,rendered)); 
+
+    })
+})
+// specify dir for template engine
+app.set("views","./views");
+//register template engine
+app.set("view engine","perscholas");
+
+//routes
+app.get("/",(req,res)=>{
+    console.log("This was a get request");
+})
+//template route for home
+app.get("/home",(req,res)=>{
+    let option={
+        heading:"This is my Cat heading page",
+        info:"My cat is the most obedient cat in the whole world"
+    };
+    res.render("home",option);
+})
+app.get("/form", (req, res) => {
+    let option = {
+        heading: "My cat form",
+        info: "Enter cat name"
+    };
+    res.render("form", option);
+})
+
+app.use(globalErr);
+app.listen(PORT,()=>{
+    console.log(`server listening in port: ${PORT}`);
+})
