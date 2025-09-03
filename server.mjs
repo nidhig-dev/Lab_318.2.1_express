@@ -1,6 +1,7 @@
 import express from "express";
 import globalErr from "./middleware/globalErrorHandle.mjs";
 import fs from "fs";
+import baseRoutes from "./routes/baseRoutes.mjs"
 
 const app=express();
 const PORT=3000;
@@ -24,9 +25,7 @@ app.set("views","./views");
 app.set("view engine","perscholas");
 
 //routes
-app.get("/",(req,res)=>{
-    console.log("This was a get request");
-})
+app.use("/",baseRoutes);
 //template route for home
 app.get("/home",(req,res)=>{
     let option={
@@ -42,7 +41,11 @@ app.get("/form", (req, res) => {
     };
     res.render("form", option);
 })
-
+app.post("/postAction",(req,res)=>{
+    
+    console.log(`you posted cat name`);
+    res.send(`you posted cat name`);
+})
 app.use(globalErr);
 app.listen(PORT,()=>{
     console.log(`server listening in port: ${PORT}`);

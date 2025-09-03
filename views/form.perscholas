@@ -17,9 +17,9 @@
   </nav>
   <div>
   <h1>#heading#</h1>
-  <form>
+  <form action="/postAction" method="POST">
   <label>#info#
-  <input type="text" value="Cat name" placeholder="enter name"/>
+  <input type="text" name="catName"/>
   </label>
   <input type="submit" value="submit"/> 
   </form>
